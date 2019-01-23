@@ -26,15 +26,15 @@ plt.figure()
 plt.plot(Xr)
 plt.title('Right Channel')
 """
-STFTdata  = sp.stft(data,samplerate,'hann',256)
 STFTdataXl  = sp.stft(Xl,samplerate,'hann',256)
+STFTdataXr  = sp.stft(Xr,samplerate,'hann',256)
 
-AutoLeft = np.linalg.norm(Xl,ord=2)**2 #Squared Norm of the Vector Xl
+AutoLeft  = np.linalg.norm(Xl,ord=2)**2 #Squared Norm of the Vector Xl
 AutoLeft2 = np.sum(Xl.conj().T*Xl)
 AutoLeft3 = np.sum(np.transpose(Xl)*Xl)
 AutoLeft4 = np.dot(Xl,Xl)
 
-AutoRight = np.linalg.norm(Xr,ord=2)**2 #Squared Norm of the Vector Xr
+AutoRight  = np.linalg.norm(Xr,ord=2)**2 #Squared Norm of the Vector Xr
 AutoRight2 = np.sum(Xr.conj().T*Xr)
 AutoRight3 = np.sum(np.transpose(Xr)*Xr)
 AutoRight4 = np.dot(Xr,Xr)
