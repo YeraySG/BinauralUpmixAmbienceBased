@@ -26,7 +26,9 @@ plt.plot(Xr)
 plt.title('Right Channel')
 
 AutoLeft = np.linalg.norm(Xl,ord=2)**2 #Squared Norm of the Vector Xl
-#AutoLeft2 = np.sum(Xl.conj().T*Xl)  
+#AutoLeft2 = np.sum(Xl.conj().T*Xl)
+AutoLeft3 = np.sum(np.transpose(Xl)*Xl)
+
 AutoRight = np.linalg.norm(Xr,ord=2)**2 #Squared Norm of the Vector Xr
 #AutoRight2 = np.sum(Xr.conj().T*Xr)
 
