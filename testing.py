@@ -28,8 +28,9 @@ plt.title('Right Channel')
 AutoLeft = np.linalg.norm(Xl,ord=2)**2 #Squared Norm of the Vector Xl
 #AutoLeft2 = np.sum(Xl.conj().T*Xl)  
 AutoRight = np.linalg.norm(Xr,ord=2)**2 #Squared Norm of the Vector Xr
+#AutoRight2 = np.sum(Xr.conj().T*Xr)
 
 Cross = Xl.conj().T*Xr  #conjugada traspuesta de Xl * Xr
 CrossCoefficient = Cross/(np.linalg.norm(Xl)*np.linalg.norm(Xr)) #Cross Correlation Coefficient
-CrossCoefficient2 = Cross/np.sqrt(AutoLeft*AutoRight) 
+#CrossCoefficient2 = Cross/np.sqrt(AutoLeft2*AutoRight2) 
 Dif = sum (CrossCoefficient-CrossCoefficient2)
