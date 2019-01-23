@@ -4,7 +4,7 @@ Created on Tue Jan 22 18:54:07 2019
 
 @author: u114293
 """
-import soundfile
+#import soundfile
 import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
@@ -25,6 +25,11 @@ plt.figure()
 plt.plot(Xr)
 plt.title('Right Channel')
 
-AutoLeft = np.linalg.norm(Xl,ord=2)**2 #Squared Norm of the Vector Xl  
-AutoRight = np.linalg.norm(Xr,ord=2)**2 #Squared Norm of the Vector Xr  
-#Cross = """"
+AutoLeft = np.linalg.norm(Xl,ord=2)**2 #Squared Norm of the Vector Xl
+#AutoLeft2 = np.sum(Xl.conj().T*Xl)  
+AutoRight = np.linalg.norm(Xr,ord=2)**2 #Squared Norm of the Vector Xr
+
+Cross = Xl.conj().T*Xr  #conjugada traspuesta de Xl * Xr
+CrossCoefficient = Cross/(np.linalg.norm(Xl)*np.linalg.norm(Xr)) #Cross Correlation Coefficient
+CrossCoefficient2 = Cross/np.sqrt(AutoLeft*AutoRight) 
+Dif = sum (CrossCoefficient-CrossCoefficient2)
