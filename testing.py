@@ -29,6 +29,20 @@ plt.title('Right Channel')
 STFTdataXl  = sp.stft(Xl,samplerate,'hann',256)
 STFTdataXr  = sp.stft(Xr,samplerate,'hann',256)
 
+test = STFTdataXl[2]
+
+timesXl = STFTdataXl[1]
+timesXr = STFTdataXr[1]
+
+STFTXl = STFTdataXl[2]
+STFTXr = STFTdataXr[2]
+
+
+for t in timesXl:
+    xl = STFTdataXl[2,t]
+
+ 
+
 AutoLeft  = np.linalg.norm(Xl,ord=2)**2 #Squared Norm of the Vector Xl
 AutoLeft2 = np.sum(Xl.conj().T*Xl)
 AutoLeft3 = np.sum(np.transpose(Xl)*Xl)
