@@ -39,7 +39,7 @@ STFTXr = STFTdataXr[2]
 
 
 for t in timesXl:
-    xl = STFTdataXl[2,t]
+    xl = STFTXl[2,t]
 
  
 
