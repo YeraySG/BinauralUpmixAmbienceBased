@@ -11,9 +11,9 @@ from scipy.io import wavfile
 import matplotlib.pyplot as plt
 
 
-samplerate,data = wavfile.read('speech-female_Stereo_Lowered.wav')#read the data from the audio file
+samplerate,data = wavfile.read('speech-female_Stereo_NO_R.wav')#read the data from the audio file
 
-plt.plot(data)
+#plt.plot(data)
 
 Xl = data[:,0] # Left Channel
 Xr = data[:,1] # Right Channel
@@ -38,11 +38,23 @@ STFTXl = STFTdataXl[2]
 STFTXr = STFTdataXr[2]
 
 
-for t in timesXl:
-    xl = STFTXl[2,t]
+ForgettingFactor = 0.7
+rLL = np.empty( len(STFTXl[1]))
+i = 0
+for t in range(len(STFTXl[1])):
+    if ((t-1)<0):
+        rLL[t] = (1-ForgettingFactor)*(np.sum(Xl.conj()*Xl))
+    else :
+        xl = STFTXl[:,t]
+        rLL[t] = ForgettingFactor*rLL[t-1] + (1-ForgettingFactor)*(np.sum(Xl.conj()*Xl))
+        print (t)
+        
+    
+    
 
  
 
+"""
 AutoLeft  = np.linalg.norm(Xl,ord=2)**2 #Squared Norm of the Vector Xl
 AutoLeft2 = np.sum(Xl.conj().T*Xl)
 AutoLeft3 = np.sum(np.transpose(Xl)*Xl)
@@ -56,3 +68,4 @@ Cross = Xl.conj().T*Xr  #conjugada traspuesta de Xl * Xr
 CrossCoefficient = Cross/(np.linalg.norm(Xl)*np.linalg.norm(Xr)) #Cross Correlation Coefficient
 CrossCoefficient2 = Cross/np.sqrt(AutoLeft2*AutoRight2) 
 Dif = sum (CrossCoefficient-CrossCoefficient2)
+"""
