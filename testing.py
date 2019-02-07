@@ -38,16 +38,34 @@ STFTXl = STFTdataXl[2]
 STFTXr = STFTdataXr[2]
 
 
-ForgettingFactor = 0.7
-rLL = np.empty( len(STFTXl[1]))
-i = 0
-for t in range(len(STFTXl[1])):
-    if ((t-1)<0):
-        rLL[t] = (1-ForgettingFactor)*(np.sum(Xl.conj()*Xl))
-    else :
-        xl = STFTXl[:,t]
-        rLL[t] = ForgettingFactor*rLL[t-1] + (1-ForgettingFactor)*(np.sum(Xl.conj()*Xl))
-        print (t)
+#ForgettingFactor = 0.7
+#rLL = np.empty( len(STFTXl[1]))
+#i = 0
+#for t in range(len(STFTXl[1])):
+#    if ((t-1)<0):
+#        rLL[t] = (1-ForgettingFactor)*(np.sum(Xl.conj()*Xl))
+#    else :
+#        xl = STFTXl[:,t]
+#        rLL[t] = ForgettingFactor*rLL[t-1] + (1-ForgettingFactor)*(np.sum(Xl.conj()*Xl))
+#        print (t)
+
+def AutoLeft (Xl,FF): #Xl is STFTXL
+    W,R =np.shape(Xl)
+    AL = np.zeros( (W,R))
+    for t in range (1,R):
+        for f in range(W):
+            AL [f,t]= np.power(np.abs(Xl[f,t]),2) #Since the value is complex the abs is equal to the norm
+            AL_last = FF*AL[f,t-1]
+            AL_now = (1-FF)*AL[f,t]
+            AL [f,t] = AL_last + AL_now
+    for f in range(W):
+            AL [f,0]= np.power(np.abs(Xl[f,0]),2) #Since the value is complex the abs is equal to the norm
+            AL_last = 0
+            AL_now = (1-FF)*AL[f,t]
+            AL [f,0] = AL_last + AL_now
+    return AL
+
+AL = AutoLeft(STFTXl,0.7)
         
     
     
