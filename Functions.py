@@ -42,3 +42,19 @@ def AutoCorr (Xl,FF): #Xl is STFTXL
             AL_now = (1-FF)*AL[f,t]
             AL [f,0] = AL_last + AL_now
     return AL
+
+def CrossCorr (Xl,Xr,FF): #Xl is STFTXL
+    W,R =np.shape(Xl) # Get the values of the time and frequency from the axis 
+    Ac = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
+    for t in range (1,R):
+        for f in range(W):
+            Ac [f,t]= Xl[f,t]*np.conj(Xr[f,t]) #Since the value is complex the abs is equal to the norm
+            Ac_last = FF*Ac[f,t-1]
+            Ac_now = (1-FF)*Ac[f,t]
+            Ac [f,t] = Ac_last + Ac_now
+    for f in range(W): # Special case for t-1, which is non existing
+            Ac [f,0]= Xl[f,0]*np.conj(Xr[f,0]) 
+            Ac_last = 0
+            Ac_now = (1-FF)*Ac[f,t]
+            Ac [f,0] = Ac_last + Ac_now
+    return Ac
