@@ -27,34 +27,34 @@ def STFTcomputation (Xl,Xr,samplerate):
     
     return STFTXl,STFTXr
 
-def AutoCorr (Xl,FF): #Xl is STFTXL
-    W,R =np.shape(Xl) # Get the values of the time and frequency from the axis 
-    AL = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
+def AutoCorr (Xdata,FF): #Xl is STFTXL
+    W,R =np.shape(Xdata) # Get the values of the time and frequency from the axis 
+    AC = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
     for t in range (1,R):
         for f in range(W):
-            AL [f,t]= np.power(np.abs(Xl[f,t]),2) #Since the value is complex the abs is equal to the norm
-            AL_last = FF*AL[f,t-1]
-            AL_now = (1-FF)*AL[f,t]
-            AL [f,t] = AL_last + AL_now
+            AC [f,t]= np.power(np.abs(Xdata[f,t]),2) #Since the value is complex the abs is equal to the norm
+            AC_last = FF*AC[f,t-1]
+            AC_now = (1-FF)*AC[f,t]
+            AC [f,t] = AC_last + AC_now
     for f in range(W): # Special case for t-1, which is non existing
-            AL [f,0]= np.power(np.abs(Xl[f,0]),2) 
-            AL_last = 0
-            AL_now = (1-FF)*AL[f,t]
-            AL [f,0] = AL_last + AL_now
-    return AL
+            AC [f,0]= np.power(np.abs(Xdata[f,0]),2) 
+            AC_last = 0
+            AC_now = (1-FF)*AC[f,t]
+            AC [f,0] = AC_last + AC_now
+    return AC
 
 def CrossCorr (Xl,Xr,FF): #Xl is STFTXL
     W,R =np.shape(Xl) # Get the values of the time and frequency from the axis 
-    Ac = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
+    Cc = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
     for t in range (1,R):
         for f in range(W):
-            Ac [f,t]= Xl[f,t]*np.conj(Xr[f,t]) #Since the value is complex the abs is equal to the norm
-            Ac_last = FF*Ac[f,t-1]
-            Ac_now = (1-FF)*Ac[f,t]
-            Ac [f,t] = Ac_last + Ac_now
+            Cc [f,t]= Xl[f,t]*np.conj(Xr[f,t]) #Since the value is complex the abs is equal to the norm
+            Cc_last = FF*Cc[f,t-1]
+            Cc_now = (1-FF)*Cc[f,t] #Is the same as-> Cc_now = (1-FF)*Xl[f,t]*np.conj(Xr[f,t]), as seen in the eq. 34
+            Cc [f,t] = Cc_last + Cc_now
     for f in range(W): # Special case for t-1, which is non existing
-            Ac [f,0]= Xl[f,0]*np.conj(Xr[f,0]) 
-            Ac_last = 0
-            Ac_now = (1-FF)*Ac[f,t]
-            Ac [f,0] = Ac_last + Ac_now
-    return Ac
+            Cc [f,0]= Xl[f,0]*np.conj(Xr[f,0]) 
+            Cc_last = 0
+            Cc_now = (1-FF)*Cc[f,t]
+            Cc [f,0] = Cc_last + Cc_now
+    return Cc
