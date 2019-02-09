@@ -58,3 +58,20 @@ def CrossCorr (Xl,Xr,FF): #Xl is STFTXL
             Cc_now = (1-FF)*Cc[f,t]
             Cc [f,0] = Cc_last + Cc_now
     return Cc
+
+def CrossCorrCoeff (Cc,AL,AR,FF):
+    W,R =np.shape(Cc) # Get the values of the time and frequency from the axis 
+    CCCoeff = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
+    for t in range (1,R):
+        for f in range(W):
+            CCCoeff [f,t]= Cc[f,t]/(np.abs(AL[f,t])*np.abs(AR[f,t])) #Since the value is complex the abs is equal to the norm
+            CCCoeff_last = FF*CCCoeff[f,t-1]
+            CCCoeff_now = (1-FF)*CCCoeff[f,t] 
+            CCCoeff [f,t] = CCCoeff_last + CCCoeff_now
+    for f in range(W): # Special case for t-1, which is non existing
+            CCCoeff [f,0]= Cc[f,0]/(np.abs(AL[f,0])*np.abs(AR[f,0]))
+            CCCoeff_last = 0
+            CCCoeff_now = (1-FF)*CCCoeff[f,t]
+            CCCoeff [f,0] = CCCoeff_last + CCCoeff_now
+    
+    return CCCoeff
