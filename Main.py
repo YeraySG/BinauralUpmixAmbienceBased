@@ -2,8 +2,9 @@
 """
 Created on Thu Jan 24 18:29:47 2019
 
+Main file used to call the functions to run the code
+
 @author: u114293
-Main
 """
 
 import matplotlib.pyplot as plt

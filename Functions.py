@@ -2,6 +2,8 @@
 """
 Created on Wed Jan 30 11:39:17 2019
 
+File to create and define all the functions used for the implementation of the paper
+
 @author: u114293
 """
 import scipy.signal as sp
