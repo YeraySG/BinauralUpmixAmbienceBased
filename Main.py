@@ -8,7 +8,7 @@ Main file used to call the functions to run the code
 """
 
 import matplotlib.pyplot as plt
-from Functions import readwav, STFTcomputation, AutoCorr, CrossCorr, CrossCorrCoeff, AlphaCom
+from Functions import readwav, STFTcomputation, AutoCorr, CrossCorr, CrossCorrCoeff, AlphaCom, EqualRatios
 
 Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
 
@@ -28,3 +28,5 @@ CCCoefficient = CrossCorrCoeff (CrossCorrLR,Rll,Rrr)
 
 AlphaC = AlphaCom (CCCoefficient)
 
+AmbienceL = EqualRatios(AlphaC,STFTXl)
+AmbienceR = EqualRatios(AlphaC,STFTXr)

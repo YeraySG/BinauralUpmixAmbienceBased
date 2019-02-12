@@ -29,6 +29,12 @@ def STFTcomputation (Xl,Xr,samplerate):
     
     return STFTXl,STFTXr
 
+def InverseSTFT (Xl,Xr,samplerate):
+    IXl = sp.istft(Xl,samplerate,'hann',256)
+    IXr = sp.istft(Xr,samplerate,'hann',256)
+    
+    return IXl, IXr
+ 
 def AutoCorr (Xdata,FF): #Xl is STFTXL
     W,R =np.shape(Xdata) # Get the values of the time and frequency from the axis 
     AC = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
@@ -87,3 +93,12 @@ def AlphaCom (CCCoeff):
             AlphaCom [f,t] = np.sqrt((1-CCCoeff[f,t]))
             #AlphaCom [f,t] = np.sqrt((Ones[f,t]-CCCoeff[f,t]))
     return AlphaCom
+
+def EqualRatios (AlphaCom,Xdata):
+    W,R = np.shape(Xdata)
+    Ambience = np.zeros((W,R))
+    for t in range (R):
+        for f in range (W):
+            Ambience[f,t] = np.abs(Xdata[f,t])*AlphaCom[f,t]
+    return Ambience
+
