@@ -9,9 +9,10 @@ File to create and define all the functions used for the implementation of the p
 import scipy.signal as sp
 import numpy as np
 from scipy.io import wavfile
+import soundfile as sf
 
 def readwav (name): 
-    samplerate,data = wavfile.read(name)#read the data from the audio file and extracts the samplerate
+    data,samplerate = sf.read(name)#read the data from the audio file and extracts the samplerate
     Xl = data[:,0] # Left Channel
     Xr = data[:,1] # Right Channel
     return Xl,Xr,samplerate
@@ -86,20 +87,20 @@ def CrossCorrCoeff (Cc,AL,AR):
     return CCCoeff
 
 def AlphaCom (CCCoeff):
-    W,R = np.shape(CCCoeff)
-    AlphaCom = np.zeros((W,R))
-    #Ones = np.ones((W,R))
-    for t in range (R):
-        for f in range (W):
-            AlphaCom [f,t] = np.sqrt((1-CCCoeff[f,t]))
+#    W,R = np.shape(CCCoeff)
+#    AlphaCom = np.zeros((W,R))
+#    #Ones = np.ones((W,R))
+#    for t in range (R):
+#        for f in range (W):
+    AlphaCom = np.sqrt((1-CCCoeff))
             #AlphaCom [f,t] = np.sqrt((Ones[f,t]-CCCoeff[f,t]))
     return AlphaCom
 
 def EqualRatios (AlphaCom,Xdata):
-    W,R = np.shape(Xdata)
-    Ambience = np.zeros((W,R))
-    for t in range (R):
-        for f in range (W):
-            Ambience[f,t] = np.abs(Xdata[f,t])*AlphaCom[f,t]
+#    W,R = np.shape(Xdata)
+#    Ambience = np.zeros((W,R))
+#    for t in range (R):
+#        for f in range (W):
+    Ambience = np.abs(Xdata)*AlphaCom
     return Ambience
 
