@@ -8,7 +8,6 @@ File to create and define all the functions used for the implementation of the p
 """
 import scipy.signal as sp
 import numpy as np
-from scipy.io import wavfile
 import soundfile as sf
 
 def readwav (name): 
@@ -36,7 +35,31 @@ def InverseSTFT (Xl,Xr,samplerate):
     
     
     return IXl, IXr
- 
+
+def CnstPwrPanning (Xl,Xr,angle): #Pan a stereo signal to a given angle using the Constant Power Panning formula
+    """
+    The angle value should be between -pi/2 and pi/2
+    """
+    if (angle > 45) or (angle < -45):
+        print ('Insert a value of angle between +- 45º')
+    else:
+        rad = (angle*np.pi)/180
+        
+        PXl = Xl*np.cos(rad)
+        PXr = Xr*np.sin(rad)
+    
+    return PXl,PXr
+
+def CheckZeroes (signal): #Checks for the value 0 and adds an unnoticeable value
+    
+    C = np.size(signal)
+    for counter in range(C):
+        if (signal[counter] == 0.0):
+            signal[counter] = 10**-5
+        else:
+            signal[counter] = signal[counter]
+    return signal
+
 def AutoCorr (Xdata,FF): #Xl is STFTXL
     W,R =np.shape(Xdata) # Get the values of the time and frequency from the axis 
     AC = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
