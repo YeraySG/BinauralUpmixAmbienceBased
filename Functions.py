@@ -50,7 +50,21 @@ def CnstPwrPanning (Xl,Xr,angle): #Pan a stereo signal to a given angle using th
     
     return PXl,PXr
 
-def CheckZeroes (signal): #Checks for the value 0 and adds an unnoticeable value
+def Audiowrite(Xl,Xr,Fs):
+    C=2
+    S=np.size(Xl)
+    data = np.zeros((S,C))
+    for c in range (C):
+        if c == 0:
+            for s in range (S):
+                data [c,s] = Xl[c,s]
+        else:
+            data[c,s] = Xr[c,s]
+            
+    return data
+            
+
+def CheckZeros (signal): #Checks for the value 0 and adds an unnoticeable value
     
     C = np.size(signal)
     for counter in range(C):
