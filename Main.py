@@ -8,7 +8,7 @@ Main file used to call the functions to run the code
 """
 
 import matplotlib.pyplot as plt
-from Functions import readwav, STFTcomputation, AutoCorr, CrossCorr, CrossCorrCoeff, AlphaCom, EqualRatios,CheckZeros,CnstPwrPanning,Audiowrite
+from Functions import readwav, STFTcomputation,InverseSTFT, AutoCorr, CrossCorr, CrossCorrCoeff, AlphaCom, EqualRatios,CheckZeros,CnstPwrPanning,Audiowrite
 
 Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
 
@@ -31,7 +31,9 @@ plt.show()
 #Panning
 
 PXl,PXr = CnstPwrPanning(NewXl,NewXr,45)
+IPXl,IPXr = InverseSTFT(PXl,PXr,Samplerate)
 Paudio = Audiowrite(PXl,PXr,Samplerate)
+
 #Pannedaudio =sf.write()
 
 #STFT and Correlation

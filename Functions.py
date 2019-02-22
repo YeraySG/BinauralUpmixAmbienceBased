@@ -29,10 +29,9 @@ def STFTcomputation (Xl,Xr,samplerate):
     
     return STFTXl,STFTXr
 
-def InverseSTFT (Xl,Xr,samplerate):
-    IXl = sp.istft(Xl,samplerate,'hann',256)
-    IXr = sp.istft(Xr,samplerate,'hann',256)
-    
+def InverseSTFT (Xl,Xr,Fs):
+    IXl = sp.istft(Xl,Fs,'hann',256)
+    IXr = sp.istft(Xr,Fs,'hann',256)
     
     return IXl, IXr
 
@@ -54,13 +53,8 @@ def Audiowrite(Xl,Xr,Fs):
     C=2
     S=np.size(Xl)
     data = np.zeros((S,C))
-    for c in range (C):
-        if c == 0:
-            for s in range (S):
-                data [c,s] = Xl[c,s]
-        else:
-            data[c,s] = Xr[c,s]
-            
+    data [:,0] = Xl[:]
+    data [:,1] = Xr[:]            
     return data
             
 
