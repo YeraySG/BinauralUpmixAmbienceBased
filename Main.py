@@ -8,14 +8,14 @@ Main file used to call the functions to run the code
 """
 
 import matplotlib.pyplot as plt
-from Functions import readwav, STFTcomputation,InverseSTFT, AutoCorr, CrossCorr, CrossCorrCoeff, AlphaCom, EqualRatios,CheckZeros,CnstPwrPanning,Audiowrite
+from Functions import readwav, STFTcomputation,InverseSTFT, AutoCorr, CrossCorr, CrossCorrCoeff, AlphaCom, EqualRatios,AddNoise,CnstPwrPanning,Audiowrite
 
 Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
 
-# Check for zeroes
+'Check for zeros'
 
-NewXl=CheckZeros (Xl)
-NewXr=CheckZeros (Xr)
+NewXl = AddNoise (Xl)
+NewXr = AddNoise (Xr)
 
 #0 in NewXl
 #0 in NewXr
@@ -28,16 +28,17 @@ plt.ylabel('Amplitude')
 plt.legend()
 plt.show()
 
-#Panning
+'Panning'
 
-PXl,PXr = CnstPwrPanning(NewXl,NewXr,45)
-IPXl,IPXr = InverseSTFT(PXl,PXr,Samplerate)
-Paudio = Audiowrite(PXl,PXr,Samplerate)
+PAudio,PXr,PXl = CnstPwrPanning(NewXl,45)
 
-#Pannedaudio =sf.write()
+# IPXl,IPXr = InverseSTFT(PXl,PXr,Samplerate) # AQUI NO
+PannedAudio = Audiowrite(PXr,PXl,Samplerate,'PannedAudio_45.wav')
 
-#STFT and Correlation
 
+'STFT and Correlation'
+
+# STFTXl, STFTXr = STFTcomputation(NewXl,NewXr,Samplerate)
 STFTXl, STFTXr = STFTcomputation(NewXl,NewXr,Samplerate)
 
 Rll = AutoCorr (STFTXl,0.7)
@@ -47,10 +48,13 @@ CrossCorrLR = CrossCorr (Rll,Rrr,0.7)
 CCCoefficient = CrossCorrCoeff (CrossCorrLR,Rll,Rrr)
 
 
-#Equal Ratios of Ambience
+'Equal Ratios of Ambience'
 
 AlphaC = AlphaCom (CCCoefficient)
+#np.min(AlphaC)
+#np.max(AlphaC)
 
 AmbienceL = EqualRatios(AlphaC,STFTXl)
 AmbienceR = EqualRatios(AlphaC,STFTXr)
 
+# IAXl,IAXr = InverseSTFT(AmbienceL,AmbienceL,Samplerate) # AQUI SI

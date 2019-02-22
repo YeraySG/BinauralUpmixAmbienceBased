@@ -35,38 +35,45 @@ def InverseSTFT (Xl,Xr,Fs):
     
     return IXl, IXr
 
-def CnstPwrPanning (Xl,Xr,angle): #Pan a stereo signal to a given angle using the Constant Power Panning formula
+def CnstPwrPanning (signal,angle): #Pan a stereo signal to a given angle using the Constant Power Panning formula
     """
     The angle value should be between -pi/2 and pi/2
     """
     if (angle > 45) or (angle < -45):
         print ('Insert a value of angle between +- 45º')
     else:
-        rad = (angle*np.pi)/180
+        rad = ((45+angle)*np.pi)/180
         
-        PXl = Xl*np.cos(rad)
-        PXr = Xr*np.sin(rad)
+        PXl = signal*np.cos(rad)
+        PXr = signal*np.sin(rad)
+        
+        PAudio = np.zeros((np.size(signal),2))
+        PAudio [:,0] = PXl
+        PAudio [:,1] = PXr
     
-    return PXl,PXr
+    return PAudio,PXl,PXr
 
-def Audiowrite(Xl,Xr,Fs):
+def Audiowrite(Xl,Xr,Fs,name):
     C=2
     S=np.size(Xl)
     data = np.zeros((S,C))
     data [:,0] = Xl[:]
-    data [:,1] = Xr[:]            
+    data [:,1] = Xr[:]    
+    sf.write(name,data,Fs)        
     return data
             
 
-def CheckZeros (signal): #Checks for the value 0 and adds an unnoticeable value
+def AddNoise (signal): #Checks for the value 0 and adds an unnoticeable value
     
-    C = np.size(signal)
-    for counter in range(C):
-        if (signal[counter] == 0.0):
-            signal[counter] = 10**-5
-        else:
-            signal[counter] = signal[counter]
-    return signal
+    noise = np.random.normal(1e-5,1e-3,np.size(signal)) # 0 is the mean of the normal distribution, 1 is the std. deviation of the normal distribution, np.size() is the number of elements in the noise
+    data = signal+noise 
+#    C = np.size(signal)
+#    for counter in range(C):
+#        if (signal[counter] == 0.0):
+#            signal[counter] = 10**-5
+#        else:
+#            signal[counter] = signal[counter]
+    return data
 
 def AutoCorr (Xdata,FF): #Xl is STFTXL
     W,R =np.shape(Xdata) # Get the values of the time and frequency from the axis 
@@ -103,18 +110,18 @@ def CrossCorr (Xl,Xr,FF): #Xl is STFTXL
 def CrossCorrCoeff (Cc,AL,AR):
     W,R =np.shape(Cc) # Get the values of the time and frequency from the axis 
     CCCoeff = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
-    for t in range (1,R):
+
+    for t in range (R):
         for f in range(W):
-            CCCoeff [f,t]= Cc[f,t]/(np.abs(AL[f,t])*np.abs(AR[f,t])) #Since the value is complex the abs is equal to the norm
+            CCCoeff [f,t]= Cc[f,t]/np.sqrt((AL[f,t])*(AR[f,t])) #Since the value is complex the abs is equal to the norm
 #            CCCoeff_last = FF*CCCoeff[f,t-1]
 #            CCCoeff_now = (1-FF)*CCCoeff[f,t] 
 #            CCCoeff [f,t] = CCCoeff_last + CCCoeff_now
-    for f in range(W): # Special case for t-1, which is non existing
-            CCCoeff [f,0]= Cc[f,0]/(np.abs(AL[f,0])*np.abs(AR[f,0]))
+#    for f in range(W): # Special case for t-1, which is non existing
+#            CCCoeff [f,0]= Cc[f,0]/(np.abs(AL[f,0])*np.abs(AR[f,0]))
 #            CCCoeff_last = 0
 #            CCCoeff_now = (1-FF)*CCCoeff[f,t]
 #            CCCoeff [f,0] = CCCoeff_last + CCCoeff_now
-    
     return CCCoeff
 
 def AlphaCom (CCCoeff):
