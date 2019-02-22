@@ -30,15 +30,16 @@ plt.show()
 
 #Panning
 
-PXl,PXr = CnstPwrPanning(NewXl,NewXr,45)
-IPXl,IPXr = InverseSTFT(PXl,PXr,Samplerate)
-Paudio = Audiowrite(PXl,PXr,Samplerate)
+PXl,PXr = CnstPwrPanning(NewXl,NewXr,45) # LE TIENE QUE ENTRAR UNA SENYAL MONO!
+# IPXl,IPXr = InverseSTFT(PXl,PXr,Samplerate) # AQUI NO
+Paudio = Audiowrite(PXl,PXr,Samplerate) # COMPLETAR
 
 #Pannedaudio =sf.write()
 
 #STFT and Correlation
 
-STFTXl, STFTXr = STFTcomputation(NewXl,NewXr,Samplerate)
+# STFTXl, STFTXr = STFTcomputation(NewXl,NewXr,Samplerate)
+STFTXl, STFTXr = STFTcomputation(PXl,PXr,Samplerate)
 
 Rll = AutoCorr (STFTXl,0.7)
 Rrr = AutoCorr (STFTXr,0.7)
@@ -49,7 +50,7 @@ CCCoefficient = CrossCorrCoeff (CrossCorrLR,Rll,Rrr)
 
 #Equal Ratios of Ambience
 
-AlphaC = AlphaCom (CCCoefficient)
+AlphaC = AlphaCom(CCCoefficient)
 
 AmbienceL = EqualRatios(AlphaC,STFTXl)
 AmbienceR = EqualRatios(AlphaC,STFTXr)
