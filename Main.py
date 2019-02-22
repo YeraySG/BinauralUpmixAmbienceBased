@@ -29,16 +29,14 @@ plt.legend()
 plt.show()
 
 'Panning'
-
 PAudio,PXr,PXl = CnstPwrPanning(NewXl,45)
 
 # IPXl,IPXr = InverseSTFT(PXl,PXr,Samplerate) # AQUI NO
 PannedAudio = Audiowrite(PXr,PXl,Samplerate,'PannedAudio_45.wav')
 
-
 'STFT and Correlation'
 
-# STFTXl, STFTXr = STFTcomputation(NewXl,NewXr,Samplerate)
+# STFTXl, STFTXr = STFTcomputation(PXl,PXr,Samplerate)
 STFTXl, STFTXr = STFTcomputation(NewXl,NewXr,Samplerate)
 
 Rll = AutoCorr (STFTXl,0.7)
@@ -53,6 +51,7 @@ CCCoefficient = CrossCorrCoeff (CrossCorrLR,Rll,Rrr)
 AlphaC = AlphaCom (CCCoefficient)
 #np.min(AlphaC)
 #np.max(AlphaC)
+
 
 AmbienceL = EqualRatios(AlphaC,STFTXl)
 AmbienceR = EqualRatios(AlphaC,STFTXr)
