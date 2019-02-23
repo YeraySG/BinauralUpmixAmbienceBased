@@ -11,6 +11,7 @@ import numpy as np
 import soundfile as sf
 
 def readwav (name): 
+    
     data,samplerate = sf.read(name)#read the data from the audio file and extracts the samplerate
     Xl = data[:,0] # Left Channel
     Xr = data[:,1] # Right Channel
@@ -30,6 +31,7 @@ def STFTcomputation (Xl,Xr,samplerate):
     return STFTXl,STFTXr
 
 def InverseSTFT (Xl,Xr,Fs):
+    
     IXl = sp.istft(Xl,Fs,'hann',256)
     IXr = sp.istft(Xr,Fs,'hann',256)
     
@@ -40,7 +42,7 @@ def CnstPwrPanning (signal,angle): #Pan a stereo signal to a given angle using t
     The angle value should be between -pi/2 and pi/2
     """
     if (angle > 45) or (angle < -45):
-        print ('Insert a value of angle between +- 45º')
+        print ('Insert a value between +- 45º')
     else:
         rad = ((45+angle)*np.pi)/180
         
@@ -51,9 +53,10 @@ def CnstPwrPanning (signal,angle): #Pan a stereo signal to a given angle using t
         PAudio [:,0] = PXl
         PAudio [:,1] = PXr
     
-    return PAudio,PXl,PXr
+        return PAudio,PXl,PXr
 
 def Audiowrite(Xl,Xr,Fs,name):
+    
     C=2
     S=np.size(Xl)
     data = np.zeros((S,C))
@@ -67,15 +70,10 @@ def AddNoise (signal): #Checks for the value 0 and adds an unnoticeable value
     
     noise = np.random.normal(1e-5,1e-3,np.size(signal)) # 0 is the mean of the normal distribution, 1 is the std. deviation of the normal distribution, np.size() is the number of elements in the noise
     data = signal+noise 
-#    C = np.size(signal)
-#    for counter in range(C):
-#        if (signal[counter] == 0.0):
-#            signal[counter] = 10**-5
-#        else:
-#            signal[counter] = signal[counter]
     return data
 
 def AutoCorr (Xdata,FF): #Xl is STFTXL
+    
     W,R =np.shape(Xdata) # Get the values of the time and frequency from the axis 
     AC = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
     for t in range (1,R):
@@ -92,6 +90,7 @@ def AutoCorr (Xdata,FF): #Xl is STFTXL
     return AC
 
 def CrossCorr (Xl,Xr,FF): #Xl is STFTXL
+    
     W,R =np.shape(Xl) # Get the values of the time and frequency from the axis 
     Cc = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
     for t in range (1,R):
@@ -108,37 +107,21 @@ def CrossCorr (Xl,Xr,FF): #Xl is STFTXL
     return Cc
 
 def CrossCorrCoeff (Cc,AL,AR):
+   
     W,R =np.shape(Cc) # Get the values of the time and frequency from the axis 
     CCCoeff = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
-
     for t in range (R):
         for f in range(W):
             CCCoeff [f,t]= Cc[f,t]/np.sqrt((AL[f,t])*(AR[f,t])) #Since the value is complex the abs is equal to the norm
-#            CCCoeff_last = FF*CCCoeff[f,t-1]
-#            CCCoeff_now = (1-FF)*CCCoeff[f,t] 
-#            CCCoeff [f,t] = CCCoeff_last + CCCoeff_now
-#    for f in range(W): # Special case for t-1, which is non existing
-#            CCCoeff [f,0]= Cc[f,0]/(np.abs(AL[f,0])*np.abs(AR[f,0]))
-#            CCCoeff_last = 0
-#            CCCoeff_now = (1-FF)*CCCoeff[f,t]
-#            CCCoeff [f,0] = CCCoeff_last + CCCoeff_now
     return CCCoeff
 
 def AlphaCom (CCCoeff):
-#    W,R = np.shape(CCCoeff)
-#    AlphaCom = np.zeros((W,R))
-#    #Ones = np.ones((W,R))
-#    for t in range (R):
-#        for f in range (W):
+    
     AlphaCom = np.sqrt((1-CCCoeff))
-            #AlphaCom [f,t] = np.sqrt((Ones[f,t]-CCCoeff[f,t]))
     return AlphaCom
 
 def EqualRatios (AlphaCom,Xdata):
-#    W,R = np.shape(Xdata)
-#    Ambience = np.zeros((W,R))
-#    for t in range (R):
-#        for f in range (W):
+    
     Ambience = np.abs(Xdata)*AlphaCom
     return Ambience
 

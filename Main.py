@@ -17,9 +17,7 @@ Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
 NewXl = AddNoise (Xl)
 NewXr = AddNoise (Xr)
 
-#0 in NewXl
-#0 in NewXr
-
+plt.figure()
 plt.plot(NewXl, label='Left Chanel Signal')
 plt.plot(NewXr, label='Right Chanel Signal')
 plt.title('Input signal')
@@ -29,15 +27,25 @@ plt.legend()
 plt.show()
 
 'Panning'
-PAudio,PXr,PXl = CnstPwrPanning(NewXl,45)
+PAudio,PXl,PXr = CnstPwrPanning(NewXl,45)
+
+
+plt.figure()
+plt.plot(PXr, label='Panned Right Chanel Signal')
+plt.plot(PXl, label='Panned Left Chanel Signal')
+plt.title('Panned signal')
+plt.xlabel('Samples')
+plt.ylabel('Amplitude')
+plt.legend()
+plt.show()
 
 # IPXl,IPXr = InverseSTFT(PXl,PXr,Samplerate) # AQUI NO
-PannedAudio = Audiowrite(PXr,PXl,Samplerate,'PannedAudio_45.wav')
+#PannedAudio = Audiowrite(PXr,PXl,Samplerate,'PannedAudio_45.wav')
 
 'STFT and Correlation'
 
-# STFTXl, STFTXr = STFTcomputation(PXl,PXr,Samplerate)
-STFTXl, STFTXr = STFTcomputation(NewXl,NewXr,Samplerate)
+STFTXl, STFTXr = STFTcomputation(PXl,PXr,Samplerate)
+#STFTXl, STFTXr = STFTcomputation(NewXl,NewXr,Samplerate)
 
 Rll = AutoCorr (STFTXl,0.7)
 Rrr = AutoCorr (STFTXr,0.7)
