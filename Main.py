@@ -27,7 +27,7 @@ plt.legend()
 plt.show()
 
 'Panning'
-PAudio,PXl,PXr = CnstPwrPanning(NewXl,45)
+PAudio,PXl,PXr = CnstPwrPanning(NewXl,0)
 
 
 plt.figure()
