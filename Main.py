@@ -10,7 +10,9 @@ Main file used to call the functions to run the code
 import matplotlib.pyplot as plt
 from Functions import readwav, STFTcomputation,InverseSTFT, AutoCorr, CrossCorr, CrossCorrCoeff, AlphaCom, EqualRatios,AddNoise,CnstPwrPanning,Audiowrite
 
-Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
+#Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
+Xl,Xr,Samplerate= readwav('DGS.wav')
+
 
 'Check for zeros'
 
@@ -26,26 +28,26 @@ plt.ylabel('Amplitude')
 plt.legend()
 plt.show()
 
-'Panning'
-PAudio,PXl,PXr = CnstPwrPanning(NewXl,0)
-
-
-plt.figure()
-plt.plot(PXr, label='Panned Right Chanel Signal')
-plt.plot(PXl, label='Panned Left Chanel Signal')
-plt.title('Panned signal')
-plt.xlabel('Samples')
-plt.ylabel('Amplitude')
-plt.legend()
-plt.show()
+#'Panning'
+#PAudio,PXl,PXr = CnstPwrPanning(NewXl,0)
+#
+#
+#plt.figure()
+#plt.plot(PXr, label='Panned Right Chanel Signal')
+#plt.plot(PXl, label='Panned Left Chanel Signal')
+#plt.title('Panned signal')
+#plt.xlabel('Samples')
+#plt.ylabel('Amplitude')
+#plt.legend()
+#plt.show()
 
 # IPXl,IPXr = InverseSTFT(PXl,PXr,Samplerate) # AQUI NO
 #PannedAudio = Audiowrite(PXr,PXl,Samplerate,'PannedAudio_45.wav')
 
 'STFT and Correlation'
 
-STFTXl, STFTXr = STFTcomputation(PXl,PXr,Samplerate)
-#STFTXl, STFTXr = STFTcomputation(NewXl,NewXr,Samplerate)
+#STFTXl, STFTXr = STFTcomputation(PXl,PXr,Samplerate)
+STFTXl, STFTXr = STFTcomputation(NewXl,NewXr,Samplerate)
 
 Rll = AutoCorr (STFTXl,0.7)
 Rrr = AutoCorr (STFTXr,0.7)

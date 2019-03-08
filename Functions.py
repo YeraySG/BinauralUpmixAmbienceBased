@@ -134,3 +134,12 @@ def EqualRatios (AlphaCom,Xdata):
     Ambience = np.abs(Xdata)*AlphaCom
     return Ambience
 
+def ReturnSignals(Xl,Xr,Mask):
+    
+    B,H =np.shape(Mask)  
+    OnesMask = np.ones((B,H))
+    InvMask = OnesMask-Mask
+    PrimaryL = InvMask*Xl
+    PrimaryR = InvMask*Xr
+    
+    return PrimaryL,PrimaryR
