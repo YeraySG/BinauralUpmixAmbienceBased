@@ -9,6 +9,7 @@ Main file used to call the functions to run the code
 
 import matplotlib.pyplot as plt
 from Functions import readwav, STFTcomputation,InverseSTFT, AutoCorr, CrossCorr, CrossCorrCoeff, AlphaCom, EqualRatios,AddNoise,CnstPwrPanning,Audiowrite
+import numpy as np
 
 #Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
 Xl,Xr,Samplerate= readwav('DGS.wav')
@@ -20,7 +21,7 @@ NewXl = AddNoise (Xl)
 NewXr = AddNoise (Xr)
 
 plt.figure()
-plt.plot(NewXl, label='Left Chanel Signal')
+# plt.plot(NewXl, label='Left Chanel Signal')
 plt.plot(NewXr, label='Right Chanel Signal')
 plt.title('Input signal')
 plt.xlabel('Samples')
@@ -52,7 +53,8 @@ STFTXl, STFTXr = STFTcomputation(NewXl,NewXr,Samplerate)
 Rll = AutoCorr (STFTXl,0.7)
 Rrr = AutoCorr (STFTXr,0.7)
 
-CrossCorrLR = CrossCorr (Rll,Rrr,0.7)
+# CrossCorrLR = CrossCorr (Rll,Rrr,0.7)
+CrossCorrLR = CrossCorr (STFTXl,STFTXr,0.7)
 CCCoefficient = CrossCorrCoeff (CrossCorrLR,Rll,Rrr)
 
 
@@ -65,5 +67,8 @@ AlphaC = AlphaCom (CCCoefficient)
 
 AmbienceL = EqualRatios(AlphaC,STFTXl)
 AmbienceR = EqualRatios(AlphaC,STFTXr)
+
+DirectL = (1-AlphaC)*np.abs(STFTXl)
+DirectR = (1-AlphaC)*np.abs(STFTXr)
 
 # IAXl,IAXr = InverseSTFT(AmbienceL,AmbienceL,Samplerate) # AQUI SI

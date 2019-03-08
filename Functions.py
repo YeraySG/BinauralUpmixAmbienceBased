@@ -101,7 +101,7 @@ def AutoCorr (Xdata,FF): #Xl is STFTXL
 def CrossCorr (Xl,Xr,FF): #Xl is STFTXL
     
     W,R =np.shape(Xl) # Get the values of the time and frequency from the axis 
-    Cc = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
+    Cc = np.zeros( (W,R), dtype='complex') # Create a matrix of the same size as the STFT of the data
     for t in range (1,R):
         for f in range(W):
             Cc [f,t]= Xl[f,t]*np.conj(Xr[f,t]) #Since the value is complex the abs is equal to the norm
@@ -118,7 +118,7 @@ def CrossCorr (Xl,Xr,FF): #Xl is STFTXL
 def CrossCorrCoeff (Cc,AL,AR):
    
     W,R =np.shape(Cc) # Get the values of the time and frequency from the axis 
-    CCCoeff = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
+    CCCoeff = np.zeros( (W,R), dtype='complex') # Create a matrix of the same size as the STFT of the data
     for t in range (R):
         for f in range(W):
             CCCoeff [f,t]= Cc[f,t]/np.sqrt((AL[f,t])*(AR[f,t])) #Since the value is complex the abs is equal to the norm
@@ -126,12 +126,12 @@ def CrossCorrCoeff (Cc,AL,AR):
 
 def AlphaCom (CCCoeff):
     
-    AlphaCom = np.sqrt((1-CCCoeff))
+    AlphaCom = np.sqrt((1-np.abs(CCCoeff)))
     return AlphaCom
 
 def EqualRatios (AlphaCom,Xdata):
     
-    Ambience = np.abs(Xdata)*AlphaCom
+    Ambience = Xdata*AlphaCom
     return Ambience
 
 def ReturnSignals(Xl,Xr,Mask):
