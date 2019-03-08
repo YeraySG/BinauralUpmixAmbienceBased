@@ -72,3 +72,8 @@ DirectL = (1-AlphaC)*np.abs(STFTXl)
 DirectR = (1-AlphaC)*np.abs(STFTXr)
 
 # IAXl,IAXr = InverseSTFT(AmbienceL,AmbienceL,Samplerate) # AQUI SI
+
+plt.figure()
+plt.pcolormesh(np.power(np.abs(AmbienceL),2))
+plt.colorbar()
+plt.show()
