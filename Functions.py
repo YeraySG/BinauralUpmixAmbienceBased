@@ -132,14 +132,7 @@ def AlphaCom (CCCoeff):
 def EqualRatios (AlphaCom,Xdata):
     
     Ambience = Xdata*AlphaCom
-    return Ambience
+    InvMask = 1-AlphaCom
+    Primary = np.abs(Xdata)*InvMask
+    return Ambience,Primary
 
-def ReturnSignals(Xl,Xr,Mask):
-    
-    B,H =np.shape(Mask)  
-    OnesMask = np.ones((B,H))
-    InvMask = OnesMask-Mask
-    PrimaryL = InvMask*Xl
-    PrimaryR = InvMask*Xr
-    
-    return PrimaryL,PrimaryR

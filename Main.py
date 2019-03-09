@@ -12,8 +12,7 @@ from Functions import readwav, STFTcomputation,InverseSTFT, AutoCorr, CrossCorr,
 import numpy as np
 
 #Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
-Xl,Xr,Samplerate= readwav('DGS.wav')
-
+Xl,Xr,Samplerate= readwav('Hi_Izuru_Style.wav')
 
 'Check for zeros'
 
@@ -21,7 +20,7 @@ NewXl = AddNoise (Xl)
 NewXr = AddNoise (Xr)
 
 plt.figure()
-# plt.plot(NewXl, label='Left Chanel Signal')
+plt.plot(NewXl, label='Left Chanel Signal')
 plt.plot(NewXr, label='Right Chanel Signal')
 plt.title('Input signal')
 plt.xlabel('Samples')
@@ -29,7 +28,7 @@ plt.ylabel('Amplitude')
 plt.legend()
 plt.show()
 
-#'Panning'
+'Panning'
 #PAudio,PXl,PXr = CnstPwrPanning(NewXl,0)
 #
 #
@@ -42,7 +41,6 @@ plt.show()
 #plt.legend()
 #plt.show()
 
-# IPXl,IPXr = InverseSTFT(PXl,PXr,Samplerate) # AQUI NO
 #PannedAudio = Audiowrite(PXr,PXl,Samplerate,'PannedAudio_45.wav')
 
 'STFT and Correlation'
@@ -53,7 +51,6 @@ STFTXl, STFTXr = STFTcomputation(NewXl,NewXr,Samplerate)
 Rll = AutoCorr (STFTXl,0.7)
 Rrr = AutoCorr (STFTXr,0.7)
 
-# CrossCorrLR = CrossCorr (Rll,Rrr,0.7)
 CrossCorrLR = CrossCorr (STFTXl,STFTXr,0.7)
 CCCoefficient = CrossCorrCoeff (CrossCorrLR,Rll,Rrr)
 
@@ -64,16 +61,21 @@ AlphaC = AlphaCom (CCCoefficient)
 #np.min(AlphaC)
 #np.max(AlphaC)
 
+AmbienceL,DirectL = EqualRatios(AlphaC,STFTXl)
+AmbienceR,DirectR = EqualRatios(AlphaC,STFTXr)
 
-AmbienceL = EqualRatios(AlphaC,STFTXl)
-AmbienceR = EqualRatios(AlphaC,STFTXr)
+#plt.figure(),plt.pcolormesh(np.power(np.abs(AmbienceL),2)),plt.colorbar(),plt.show()
+#plt.figure(),plt.pcolormesh(np.power(np.abs(AmbienceR),2)),plt.colorbar(),plt.show()
+#plt.figure(),plt.pcolormesh(np.power(np.abs(DirectL),2)),plt.colorbar(),plt.show()
+#plt.figure(),plt.pcolormesh(np.power(np.abs(DirectR),2)),plt.colorbar(),plt.show()
 
-DirectL = (1-AlphaC)*np.abs(STFTXl)
-DirectR = (1-AlphaC)*np.abs(STFTXr)
+IAmbienceL,IAmbienceR = InverseSTFT(AmbienceL,AmbienceR,Samplerate)
+IDirectL,IDirectR = InverseSTFT(DirectL,DirectR,Samplerate)
 
-# IAXl,IAXr = InverseSTFT(AmbienceL,AmbienceL,Samplerate) # AQUI SI
+Ambience = Audiowrite(IAmbienceL[1],IAmbienceR[1],Samplerate,'AmbienceHi_Izuru_Style.wav')
+Direct = Audiowrite(IDirectL[1],IDirectR[1],Samplerate,'DirectHi_Izuru_Style.wav')
 
-plt.figure()
-plt.pcolormesh(np.power(np.abs(AmbienceL),2))
-plt.colorbar()
-plt.show()
+#DirectL = (1-AlphaC)*np.abs(STFTXl)
+#DirectR = (1-AlphaC)*np.abs(STFTXr)
+
+plt.figure(),plt.pcolormesh(np.power(np.abs(AmbienceL),2)),plt.colorbar(),plt.show()
