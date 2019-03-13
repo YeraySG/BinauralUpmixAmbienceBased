@@ -131,8 +131,27 @@ def AlphaCom (CCCoeff):
 
 def EqualRatios (AlphaCom,Xdata):
     
-    Ambience = Xdata*AlphaCom
+    AmbienceER = Xdata*AlphaCom
     InvMask = 1-AlphaCom
-    Primary = np.abs(Xdata)*InvMask
-    return Ambience,Primary
+    PrimaryER = np.abs(Xdata)*InvMask
+    return AmbienceER,PrimaryER
 
+def AmbienceEqualLevels (Rll,Rrr,Rlr):
+    
+    Squared = np.sqrt(np.power(Rll-Rrr,2)+4*(np.abs(np.power(Rlr,2))))
+    Plus = Rll+Rrr
+    Iaa = 0.5*(Plus-Squared)
+    Ia = np.sqrt(Iaa)
+    return Ia
+
+def EqLevelMask (Ia,Xdata):
+    
+    Mask = Ia/np.abs(Xdata)
+    return Mask
+
+def EqualLevels(Mask,Xdata):
+    
+    AmbienceEL = Xdata*Mask
+    InverseMask = 1 - Mask
+    PrimaryEL = Xdata*InverseMask
+    return AmbienceEL,PrimaryEL
