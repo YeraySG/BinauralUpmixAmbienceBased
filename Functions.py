@@ -138,15 +138,19 @@ def EqualRatios (AlphaCom,Xdata):
 
 def AmbienceEqualLevels (Rll,Rrr,Rlr):
     
-    Squared = np.sqrt(np.power(Rll-Rrr,2)+4*(np.abs(np.power(Rlr,2))))
+    Squared = np.sqrt(np.power(Rll-Rrr,2)+(4*(np.power(np.abs(Rlr),2))))
     Plus = Rll+Rrr
     Iaa = 0.5*(Plus-Squared)
     Ia = np.sqrt(Iaa)
     return Ia
 
-def EqLevelMask (Ia,Xdata):
-    
-    Mask = Ia/np.abs(Xdata)
+# def EqLevelMask (Ia,Xdata):
+#
+#     Mask = Ia/np.abs(Xdata)
+#     return Mask
+
+def EqLevelMask(Ia, Rxx):
+    Mask = Ia / np.sqrt(Rxx)
     return Mask
 
 def EqualLevels(Mask,Xdata):

@@ -12,7 +12,13 @@ from Functions import readwav, STFTcomputation,InverseSTFT, AutoCorr, CrossCorr,
 import numpy as np
 
 #Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
-Xl,Xr,Samplerate= readwav('R&T.wav')
+# Xl,Xr,Samplerate= readwav('R&T.wav')
+Xl,Xr,Samplerate= readwav('/Users/andres.perez/Music/Jungle Fire - Jambu/Jungle Fire - Jambu - 02 Jambu.wav')
+Xl = Xl[:20*Samplerate]
+Xr = Xr[:20*Samplerate]
+plt.plot(Xl, label='Left Chanel Signal')
+
+
 
 'Check for zeros'
 
@@ -83,8 +89,10 @@ plt.figure(),plt.pcolormesh(np.power(np.abs(AmbienceL),2)),plt.colorbar(),plt.sh
 'Equal Levels of Ambience'
 
 Ia = AmbienceEqualLevels(Rll,Rrr,CrossCorrLR)
-MaskL = EqLevelMask(Ia,STFTXl)
-MaskR = EqLevelMask(Ia,STFTXr)
+# MaskL = EqLevelMask(Ia,STFTXl)
+# MaskR = EqLevelMask(Ia,STFTXr)
+MaskL = EqLevelMask(Ia,Rll)
+MaskR = EqLevelMask(Ia,Rrr)
 
 AmbienceElL, PrimaryElL = EqualLevels(MaskL,STFTXl)
 AmbienceElR, PrimaryElR = EqualLevels(MaskR,STFTXr)
@@ -94,3 +102,15 @@ IPrimaryElL,IPrimaryElR = InverseSTFT(PrimaryElL,PrimaryElR,Samplerate)
 
 AmbienceEl = Audiowrite(IAmbienceElL[1],IAmbienceElR[1],Samplerate,'AmbienceEl.wav')
 PrimaryEl = Audiowrite(IPrimaryElL[1],IPrimaryElR[1],Samplerate,'DirectEl.wav')
+
+
+## TODO: convolution
+
+# Xl * h(30)
+# Xr * h(-30)
+# Al * h (110)
+# Ar * h (-110)
+#
+# scipy.signal.convolve()
+#
+# writewav
