@@ -13,9 +13,9 @@ import numpy as np
 
 #Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
 # Xl,Xr,Samplerate= readwav('R&T.wav')
-Xl,Xr,Samplerate= readwav('/Users/andres.perez/Music/Jungle Fire - Jambu/Jungle Fire - Jambu - 02 Jambu.wav')
-Xl = Xl[:20*Samplerate]
-Xr = Xr[:20*Samplerate]
+Xl,Xr,Samplerate= readwav('JFJ.wav')
+#Xl = Xl[:20*Samplerate]
+#Xr = Xr[:20*Samplerate]
 plt.plot(Xl, label='Left Chanel Signal')
 
 
@@ -94,6 +94,10 @@ Ia = AmbienceEqualLevels(Rll,Rrr,CrossCorrLR)
 MaskL = EqLevelMask(Ia,Rll)
 MaskR = EqLevelMask(Ia,Rrr)
 
+plt.figure(),plt.pcolormesh(MaskL),plt.colorbar(),plt.show()
+plt.figure(),plt.pcolormesh(MaskR),plt.colorbar(),plt.show()
+
+
 AmbienceElL, PrimaryElL = EqualLevels(MaskL,STFTXl)
 AmbienceElR, PrimaryElR = EqualLevels(MaskR,STFTXr)
 
@@ -104,7 +108,7 @@ AmbienceEl = Audiowrite(IAmbienceElL[1],IAmbienceElR[1],Samplerate,'AmbienceEl.w
 PrimaryEl = Audiowrite(IPrimaryElL[1],IPrimaryElR[1],Samplerate,'DirectEl.wav')
 
 
-## TODO: convolution
+## TO DO: convolution
 
 # Xl * h(30)
 # Xr * h(-30)
