@@ -13,12 +13,9 @@ import numpy as np
 
 #Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
 # Xl,Xr,Samplerate= readwav('R&T.wav')
-Xl,Xr,Samplerate= readwav('JFJ.wav')
+Xl,Xr,Samplerate= readwav('Rip&Tear.wav')
 #Xl = Xl[:20*Samplerate]
 #Xr = Xr[:20*Samplerate]
-plt.plot(Xl, label='Left Chanel Signal')
-
-
 
 'Check for zeros'
 
@@ -78,8 +75,8 @@ AmbienceR,DirectR = EqualRatios(AlphaC,STFTXr)
 IAmbienceL,IAmbienceR = InverseSTFT(AmbienceL,AmbienceR,Samplerate)
 IDirectL,IDirectR = InverseSTFT(DirectL,DirectR,Samplerate)
 
-Ambience = Audiowrite(IAmbienceL[1],IAmbienceR[1],Samplerate,'Ambience.wav')
-Direct = Audiowrite(IDirectL[1],IDirectR[1],Samplerate,'Direct.wav')
+Ambience = Audiowrite(IAmbienceL[1],IAmbienceR[1],Samplerate,'Ambience-Rip&Tear.wav')
+Direct = Audiowrite(IDirectL[1],IDirectR[1],Samplerate,'Direct-Rip&Tear.wav')
 
 #DirectL = (1-AlphaC)*np.abs(STFTXl)
 #DirectR = (1-AlphaC)*np.abs(STFTXr)
@@ -104,8 +101,29 @@ AmbienceElR, PrimaryElR = EqualLevels(MaskR,STFTXr)
 IAmbienceElL,IAmbienceElR = InverseSTFT(AmbienceElL,AmbienceElR,Samplerate)
 IPrimaryElL,IPrimaryElR = InverseSTFT(PrimaryElL,PrimaryElR,Samplerate)
 
-AmbienceEl = Audiowrite(IAmbienceElL[1],IAmbienceElR[1],Samplerate,'AmbienceEl.wav')
-PrimaryEl = Audiowrite(IPrimaryElL[1],IPrimaryElR[1],Samplerate,'DirectEl.wav')
+AmbienceEl = Audiowrite(IAmbienceElL[1],IAmbienceElR[1],Samplerate,'AmbienceEl-Rip&Tear.wav')
+PrimaryEl = Audiowrite(IPrimaryElL[1],IPrimaryElR[1],Samplerate,'DirectEl-Rip&Tear.wav')
+
+
+'Equal Ratios Andrés'
+
+AlA = autocorrelation(STFTXl,129,6892,l=0.7)
+ArA = autocorrelation(STFTXr,129,6892,l=0.7)
+CCA = cross_correlation(STFTXl,STFTXr,129,6892,l=0.7)
+CCCA = cross_correlation_coef(STFTXl,STFTXr,129,6892,l=0.7)
+ERMA = equal_ratios_mask(STFTXl,STFTXr,129,6892,l=0.7)
+
+AmLA = ERMA* np.abs(STFTXl)
+AmRA = ERMA* np.abs(STFTXl)
+DLA = (1-ERMA)*np.abs(STFTXl)
+DRA = (1-ERMA)*np.abs(STFTXr)
+
+IAmLA,IAmRA = InverseSTFT(AmLA,AmRA,Samplerate)
+IDLA,IDRA = InverseSTFT(DLA,DRA,Samplerate)
+
+AmbienceA = Audiowrite(IAmLA[1],IAmRA[1],Samplerate,'AmbienceAnd-Rip&Tear.wav')
+DirectA = Audiowrite(IDLA[1],IDRA[1],Samplerate,'DirectAnd-Rip&Tear.wav')
+
 
 
 ## TO DO: convolution

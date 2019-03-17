@@ -84,7 +84,7 @@ def AddNoise (signal): #Checks for the value 0 and adds an unnoticeable value
 def AutoCorr (Xdata,FF): #Xl is STFTXL
     
     W,R =np.shape(Xdata) # Get the values of the time and frequency from the axis 
-    AC = np.zeros( (W,R)) # Create a matrix of the same size as the STFT of the data
+    AC = np.zeros( (W,R),dtype='complex') # Create a matrix of the same size as the STFT of the data
     for t in range (1,R):
         for f in range(W):
             AC [f,t]= np.power(np.abs(Xdata[f,t]),2) #Since the value is complex the abs is equal to the norm
@@ -133,7 +133,7 @@ def EqualRatios (AlphaCom,Xdata):
     
     AmbienceER = Xdata*AlphaCom
     InvMask = 1-AlphaCom
-    PrimaryER = np.abs(Xdata)*InvMask
+    PrimaryER = Xdata*InvMask
     return AmbienceER,PrimaryER
 
 def AmbienceEqualLevels (Rll,Rrr,Rlr):
