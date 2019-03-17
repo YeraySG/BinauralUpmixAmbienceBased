@@ -86,8 +86,6 @@ plt.figure(),plt.pcolormesh(np.power(np.abs(AmbienceL),2)),plt.colorbar(),plt.sh
 'Equal Levels of Ambience'
 
 Ia = AmbienceEqualLevels(Rll,Rrr,CrossCorrLR)
-# MaskL = EqLevelMask(Ia,STFTXl)
-# MaskR = EqLevelMask(Ia,STFTXr)
 MaskL = EqLevelMask(Ia,Rll)
 MaskR = EqLevelMask(Ia,Rrr)
 
@@ -103,27 +101,6 @@ IPrimaryElL,IPrimaryElR = InverseSTFT(PrimaryElL,PrimaryElR,Samplerate)
 
 AmbienceEl = Audiowrite(IAmbienceElL[1],IAmbienceElR[1],Samplerate,'AmbienceEl-Rip&Tear.wav')
 PrimaryEl = Audiowrite(IPrimaryElL[1],IPrimaryElR[1],Samplerate,'DirectEl-Rip&Tear.wav')
-
-
-'Equal Ratios Andrés'
-
-AlA = autocorrelation(STFTXl,129,6892,l=0.7)
-ArA = autocorrelation(STFTXr,129,6892,l=0.7)
-CCA = cross_correlation(STFTXl,STFTXr,129,6892,l=0.7)
-CCCA = cross_correlation_coef(STFTXl,STFTXr,129,6892,l=0.7)
-ERMA = equal_ratios_mask(STFTXl,STFTXr,129,6892,l=0.7)
-
-AmLA = ERMA* np.abs(STFTXl)
-AmRA = ERMA* np.abs(STFTXl)
-DLA = (1-ERMA)*np.abs(STFTXl)
-DRA = (1-ERMA)*np.abs(STFTXr)
-
-IAmLA,IAmRA = InverseSTFT(AmLA,AmRA,Samplerate)
-IDLA,IDRA = InverseSTFT(DLA,DRA,Samplerate)
-
-AmbienceA = Audiowrite(IAmLA[1],IAmRA[1],Samplerate,'AmbienceAnd-Rip&Tear.wav')
-DirectA = Audiowrite(IDLA[1],IDRA[1],Samplerate,'DirectAnd-Rip&Tear.wav')
-
 
 
 ## TO DO: convolution

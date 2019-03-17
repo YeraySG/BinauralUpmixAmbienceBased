@@ -144,11 +144,6 @@ def AmbienceEqualLevels (Rll,Rrr,Rlr):
     Ia = np.sqrt(Iaa)
     return Ia
 
-# def EqLevelMask (Ia,Xdata):
-#
-#     Mask = Ia/np.abs(Xdata)
-#     return Mask
-
 def EqLevelMask(Ia, Rxx):
     Mask = Ia / np.sqrt(Rxx)
     return Mask
