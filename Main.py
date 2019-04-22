@@ -10,6 +10,7 @@ Main file used to call the functions to run the code
 import matplotlib.pyplot as plt
 from Functions import readwav, STFTcomputation,InverseSTFT, AutoCorr, CrossCorr, CrossCorrCoeff, AlphaCom, EqualRatios,AddNoise,CnstPwrPanning,Audiowrite,AmbienceEqualLevels,EqLevelMask,EqualLevels
 import numpy as np
+import scipy.signal as sp
 
 #Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
 # Xl,Xr,Samplerate= readwav('R&T.wav')
