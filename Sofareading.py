@@ -9,6 +9,7 @@ from pysofaconventions import SOFAFile
 import matplotlib.pyplot as plt
 import scipy.signal as sp
 import soundfile as sf
+import numpy as np
 from Functions import readwav
 
 path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\SCUT_KEMAR_radius_1.sofa'
@@ -80,3 +81,8 @@ dataxlMin30,dataxrMin30,samplerate = readwav('JungleFire-Jambú.wav')
 
 binaural_leftMin30 = sp.convolve(dataxlMin30,HRTFMin30[0], mode='full', method='auto')[:len(dataxlMin30)]
 binaural_rightMin30 = sp.convolve(dataxrMin30,HRTFMin30[1], mode='full', method='auto')[:len(dataxrMin30)]
+
+binaural = np.asarray([binaural_leftMin30, binaural_rightMin30]).swapaxes(-1,0)
+
+# Write to a file, and enjoy!
+sf.write('binauralMin30.wav',binaural, samplerate)
