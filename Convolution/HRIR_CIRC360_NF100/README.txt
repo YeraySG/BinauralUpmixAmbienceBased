@@ -1,0 +1,1 @@
+This .wav files were obtained by convolving the original signal (XL.XR) with each of the 4 positions
