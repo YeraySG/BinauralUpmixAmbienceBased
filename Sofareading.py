@@ -14,7 +14,9 @@ from Functions import readwav
 
 #path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\SCUT_KEMAR_radius_1.sofa'
 #path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\subject_003.sofa'
-path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR_CIRC360_NF100.sofa'
+#path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR_CIRC360_NF100.sofa'
+path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR_CIRC360_NF025.sofa'
+
 sofa = SOFAFile(path,'r')
 
 # File is actually not valid, but we can forgive them
@@ -74,7 +76,7 @@ HRTFPlus30 = data[330,:,:]
 
 HRTFPlus110 = data[250,:,:]
 
-dataxl,dataxr,samplerate = readwav('JungleFire-Jambú.wav')
+dataxl,dataxr,samplerate = readwav('The Toxic Avenger - Make This Right (Remix).wav')
 
 '30'
 plt.plot(HRTFPlus30[0], label="left", linewidth=0.5,  marker='o', markersize=1)
@@ -104,7 +106,7 @@ binaural = np.asarray([binaural_leftMin30, binaural_rightMin30]).swapaxes(-1,0)
 
 sf.write('binauralMin30.wav',binaural, samplerate)
 
-ambiencexl,ambiencexr,samplerateambience = readwav('C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience-Jambú.wav')
+ambiencexl,ambiencexr,samplerateambience = readwav('C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience-Make This Right(Remix).wav')
 
 '110'
 plt.plot(HRTFPlus110[0], label="left", linewidth=0.5,  marker='o', markersize=1)

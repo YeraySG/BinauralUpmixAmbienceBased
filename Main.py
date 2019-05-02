@@ -14,7 +14,7 @@ import scipy.signal as sp
 
 #Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
 # Xl,Xr,Samplerate= readwav('R&T.wav')
-Xl,Xr,Samplerate= readwav('JungleFire-Jambú.wav')
+Xl,Xr,Samplerate= readwav('The Toxic Avenger - Make This Right (Remix) .wav')
 #Xl = Xl[:20*Samplerate]
 #Xr = Xr[:20*Samplerate]
 
@@ -76,8 +76,8 @@ AmbienceR,DirectR = EqualRatios(AlphaC,STFTXr)
 IAmbienceL,IAmbienceR = InverseSTFT(AmbienceL,AmbienceR,Samplerate)
 IDirectL,IDirectR = InverseSTFT(DirectL,DirectR,Samplerate)
 
-Ambience = Audiowrite(IAmbienceL[1],IAmbienceR[1],Samplerate,'Ambience-Jambú.wav')
-Direct = Audiowrite(IDirectL[1],IDirectR[1],Samplerate,'Direct-Jambú.wav')
+Ambience = Audiowrite(IAmbienceL[1],IAmbienceR[1],Samplerate,'Ambience-Make This Right(Remix).wav')
+Direct = Audiowrite(IDirectL[1],IDirectR[1],Samplerate,'Direct-Make This Right(Remix).wav')
 
 #DirectL = (1-AlphaC)*np.abs(STFTXl)
 #DirectR = (1-AlphaC)*np.abs(STFTXr)
@@ -100,8 +100,8 @@ AmbienceElR, PrimaryElR = EqualLevels(MaskR,STFTXr)
 IAmbienceElL,IAmbienceElR = InverseSTFT(AmbienceElL,AmbienceElR,Samplerate)
 IPrimaryElL,IPrimaryElR = InverseSTFT(PrimaryElL,PrimaryElR,Samplerate)
 
-AmbienceEl = Audiowrite(IAmbienceElL[1],IAmbienceElR[1],Samplerate,'AmbienceEl-Jambú.wav')
-PrimaryEl = Audiowrite(IPrimaryElL[1],IPrimaryElR[1],Samplerate,'DirectEl-Jambú.wav')
+AmbienceEl = Audiowrite(IAmbienceElL[1],IAmbienceElR[1],Samplerate,'AmbienceEl-Make This Right(Remix).wav')
+PrimaryEl = Audiowrite(IPrimaryElL[1],IPrimaryElR[1],Samplerate,'DirectEl-Make This Right(Remix).wav')
 
 
 ## TO DO: convolution

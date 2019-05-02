@@ -1,1 +1,0 @@
-This .wav files were created by convolving the original signal (XL;XR) with the positions of +/- 30 degrees, and convolving the ambience with the +/- 110 degree
