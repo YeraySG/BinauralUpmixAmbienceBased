@@ -77,7 +77,7 @@ def Audiowrite(Xl,Xr,Fs,name):
 
 def AddNoise (signal): #Checks for the value 0 and adds an unnoticeable value
     
-    noise = np.random.normal(1e-5,1e-3,np.size(signal)) # 0 is the mean of the normal distribution, 1 is the std. deviation of the normal distribution, np.size() is the number of elements in the noise
+    noise = np.random.normal(1e-100,1e-50,np.size(signal)) # 0 is the mean of the normal distribution, 1 is the std. deviation of the normal distribution, np.size() is the number of elements in the noise
     data = signal+noise 
     return data
 

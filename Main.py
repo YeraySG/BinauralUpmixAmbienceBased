@@ -12,6 +12,11 @@ from Functions import readwav, STFTcomputation,InverseSTFT, AutoCorr, CrossCorr,
 import numpy as np
 import scipy.signal as sp
 
+AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\'
+DirectPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Direct\\'
+AmbienceElPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Ambience\\'
+DirectElPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Direct\\'
+
 #Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
 # Xl,Xr,Samplerate= readwav('R&T.wav')
 Xl,Xr,Samplerate= readwav('Fleetwood Mac - Dreams.wav')
@@ -76,8 +81,8 @@ AmbienceR,DirectR = EqualRatios(AlphaC,STFTXr)
 IAmbienceL,IAmbienceR = InverseSTFT(AmbienceL,AmbienceR,Samplerate)
 IDirectL,IDirectR = InverseSTFT(DirectL,DirectR,Samplerate)
 
-Ambience = Audiowrite(IAmbienceL[1],IAmbienceR[1],Samplerate,'Ambience-Dreams.wav')
-Direct = Audiowrite(IDirectL[1],IDirectR[1],Samplerate,'Direct-Dreams.wav')
+Ambience = Audiowrite(IAmbienceL[1],IAmbienceR[1],Samplerate,AmbiencePath)
+Direct = Audiowrite(IDirectL[1],IDirectR[1],Samplerate,DirectPath)
 
 #DirectL = (1-AlphaC)*np.abs(STFTXl)
 #DirectR = (1-AlphaC)*np.abs(STFTXr)
@@ -100,17 +105,6 @@ AmbienceElR, PrimaryElR = EqualLevels(MaskR,STFTXr)
 IAmbienceElL,IAmbienceElR = InverseSTFT(AmbienceElL,AmbienceElR,Samplerate)
 IPrimaryElL,IPrimaryElR = InverseSTFT(PrimaryElL,PrimaryElR,Samplerate)
 
-AmbienceEl = Audiowrite(IAmbienceElL[1],IAmbienceElR[1],Samplerate,'AmbienceEl-Dreams.wav')
-PrimaryEl = Audiowrite(IPrimaryElL[1],IPrimaryElR[1],Samplerate,'DirectEl-Dreams.wav')
+AmbienceEl = Audiowrite(IAmbienceElL[1],IAmbienceElR[1],Samplerate,AmbienceElPath)
+PrimaryEl = Audiowrite(IPrimaryElL[1],IPrimaryElR[1],Samplerate,DirectElPath)
 
-
-## TO DO: convolution
-
-# Xl * h(30)
-# Xr * h(-30)
-# Al * h (110)
-# Ar * h (-110)
-#
-# scipy.signal.convolve()
-#
-# writewav

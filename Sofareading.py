@@ -15,11 +15,14 @@ from Functions import readwav
 #path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\SCUT_KEMAR_radius_1.sofa'
 #path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\subject_003.sofa'
 #path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR_CIRC360_NF100.sofa'
-path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR_CIRC360_NF025.sofa'
+HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\HRIR_CIRC360_NF025.sofa'
 #path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\SCUT_KEMAR_radius_0.2.sofa'
 
+AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience-Dreams.wav'
+MusicPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Fleetwood Mac - Dreams.wav'
+ConvPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Convolution\\HRIR_CIRC360_NF025\\Fleetwood Mac\\Dreams-binaural.wav'
 
-sofa = SOFAFile(path,'r')
+sofa = SOFAFile(HRIRpath,'r')
 
 # File is actually not valid, but we can forgive them
 print ("\n")
@@ -78,7 +81,7 @@ HRTFPlus30 = data[330,:,:]
 
 HRTFPlus110 = data[250,:,:]
 
-dataxl,dataxr,samplerate = readwav('Boney M. - Have You Ever Seen The Rain.wav')
+dataxl,dataxr,samplerate = readwav(MusicPath)
 
 '30'
 plt.plot(HRTFPlus30[0], label="left", linewidth=0.5,  marker='o', markersize=1)
@@ -90,9 +93,10 @@ plt.show()
 binaural_leftPlus30 = sp.convolve(dataxl,HRTFPlus30[0], mode='full', method='auto')[:len(dataxl)]
 binaural_rightPlus30 = sp.convolve(dataxr,HRTFPlus30[1], mode='full', method='auto')[:len(dataxr)]
 
-binaural = np.asarray([binaural_leftPlus30, binaural_rightPlus30]).swapaxes(-1,0)
+binauralPlus30 = np.asarray([binaural_leftPlus30, binaural_rightPlus30]).swapaxes(-1,0)
 # Write to a file, and enjoy!
-sf.write('binauralPlus30.wav',binaural, samplerate)
+
+sf.write('binauralPlus30.wav',binauralPlus30, samplerate)
 
 '-30'
 plt.plot(HRTFMin30[0], label="left", linewidth=0.5,  marker='o', markersize=1)
@@ -104,11 +108,11 @@ plt.show()
 binaural_leftMin30 = sp.convolve(dataxl,HRTFMin30[0], mode='full', method='auto')[:len(dataxl)]
 binaural_rightMin30 = sp.convolve(dataxr,HRTFMin30[1], mode='full', method='auto')[:len(dataxr)]
 
-binaural = np.asarray([binaural_leftMin30, binaural_rightMin30]).swapaxes(-1,0)
+binauralMin30 = np.asarray([binaural_leftMin30, binaural_rightMin30]).swapaxes(-1,0)
 
-sf.write('binauralMin30.wav',binaural, samplerate)
+sf.write('binauralMin30.wav',binauralMin30, samplerate)
 
-ambiencexl,ambiencexr,samplerateambience = readwav('C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience-SeenRain.wav')
+ambiencexl,ambiencexr,samplerateambience = readwav(AmbiencePath)
 
 '110'
 plt.plot(HRTFPlus110[0], label="left", linewidth=0.5,  marker='o', markersize=1)
@@ -120,9 +124,9 @@ plt.show()
 binaural_leftPlus110 = sp.convolve(ambiencexl,HRTFPlus110[0], mode='full', method='auto')[:len(ambiencexl)]
 binaural_rightPlus110 = sp.convolve(ambiencexr,HRTFPlus110[1], mode='full', method='auto')[:len(ambiencexr)]
 
-binaural = np.asarray([binaural_leftPlus110, binaural_rightPlus110]).swapaxes(-1,0)
+binauralPlus110 = np.asarray([binaural_leftPlus110, binaural_rightPlus110]).swapaxes(-1,0)
 
-sf.write('binauralPlus110.wav',binaural, samplerateambience)
+sf.write('binauralPlus110.wav',binauralPlus110, samplerateambience)
 
 '-110'
 plt.plot(HRTFMin110[0], label="left", linewidth=0.5,  marker='o', markersize=1)
@@ -134,6 +138,9 @@ plt.show()
 binaural_leftMin110 = sp.convolve(ambiencexl,HRTFMin110[0], mode='full', method='auto')[:len(ambiencexl)]
 binaural_rightMin110 = sp.convolve(ambiencexr,HRTFMin110[1], mode='full', method='auto')[:len(ambiencexr)]
 
-binaural = np.asarray([binaural_leftMin110, binaural_rightMin110]).swapaxes(-1,0)
+binauralMin110 = np.asarray([binaural_leftMin110, binaural_rightMin110]).swapaxes(-1,0)
 
-sf.write('binauralMin110.wav',binaural, samplerateambience)
+sf.write('binauralMin110.wav',binauralMin110, samplerateambience)
+
+binaural = binauralPlus30+binauralMin30+binauralPlus110+binauralMin110 /4
+sf.write(ConvPath,binaural,samplerate)
