@@ -12,14 +12,15 @@ from Functions import readwav, STFTcomputation,InverseSTFT, AutoCorr, CrossCorr,
 import numpy as np
 import scipy.signal as sp
 
-AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\'
-DirectPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Direct\\'
-AmbienceElPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Ambience\\'
-DirectElPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Direct\\'
+AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience - Dreams.wav'
+DirectPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Direct\\Direct - Dreams.wav'
+AmbienceElPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Ambience\\AmbienceEL - Dreams.wav'
+DirectElPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Direct\\DirectEL - Dreams.wav'
+SongPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Fleetwood Mac - Dreams.wav'
 
 #Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
 # Xl,Xr,Samplerate= readwav('R&T.wav')
-Xl,Xr,Samplerate= readwav('Fleetwood Mac - Dreams.wav')
+Xl,Xr,Samplerate= readwav(SongPath)
 #Xl = Xl[:20*Samplerate]
 #Xr = Xr[:20*Samplerate]
 
