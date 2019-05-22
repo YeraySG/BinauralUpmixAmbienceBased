@@ -15,9 +15,9 @@ from Functions import readwav
 #path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\SCUT_KEMAR_radius_1.sofa'
 #path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\subject_003.sofa'
 #path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR_CIRC360_NF100.sofa'
-#HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\HRIR_CIRC360_NF025.sofa'
+HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\RIEC_hrir_subject_063.sofa'
 #HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\SCUT_KEMAR_radius_0.2.sofa'
-HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\subject_012.sofa'
+#HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\subject_012.sofa'
 
 AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience - Dreams.wav'
 MusicPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Fleetwood Mac - Dreams.wav'
@@ -83,13 +83,13 @@ print (hrtf.shape)
 #HRTFPlus110 = data[250,:,:]
 
 'RealHead'
-HRTFMin30 = data[150,:,:]
+HRTFMin30 = data[282,:,:]
 
-HRTFMin110 = data[194,:,:]
+HRTFMin110 = data[270,:,:]
 
-HRTFPlus30 = data[210,:,:]
+HRTFPlus30 = data[222,:,:]
 
-HRTFPlus110 = data[166,:,:]
+HRTFPlus110 = data[238,:,:]
 
 dataxl,dataxr,samplerate = readwav(MusicPath)
 
