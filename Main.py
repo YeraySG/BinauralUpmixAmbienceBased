@@ -12,17 +12,18 @@ from Functions import readwav, STFTcomputation,InverseSTFT, AutoCorr, CrossCorr,
 import numpy as np
 import scipy.signal as sp
 
-AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience - Dreams.wav'
-DirectPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Direct\\Direct - Dreams.wav'
-AmbienceElPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Ambience\\AmbienceEL - Dreams.wav'
-DirectElPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Direct\\DirectEL - Dreams.wav'
-SongPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Fleetwood Mac - Dreams.wav'
+AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience - Jambú.wav'
+DirectPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Direct\\Direct - Jambú.wav'
+AmbienceElPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Ambience\\AmbienceEL - Jambú.wav'
+DirectElPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Direct\\DirectEL - Jambú.wav'
+SongPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\JungleFire-Jambú.wav'
+MusicPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Jambú_Cut.wav'
 
 #Xl,Xr,Samplerate= readwav('speech-female_Stereo_Lowered.wav')
 # Xl,Xr,Samplerate= readwav('R&T.wav')
 Xl,Xr,Samplerate= readwav(SongPath)
-#Xl = Xl[:20*Samplerate]
-#Xr = Xr[:20*Samplerate]
+Xl = Xl[:40*Samplerate]
+Xr = Xr[:40*Samplerate]
 
 'Check for zeros'
 
@@ -109,3 +110,4 @@ IPrimaryElL,IPrimaryElR = InverseSTFT(PrimaryElL,PrimaryElR,Samplerate)
 AmbienceEl = Audiowrite(IAmbienceElL[1],IAmbienceElR[1],Samplerate,AmbienceElPath)
 PrimaryEl = Audiowrite(IPrimaryElL[1],IPrimaryElR[1],Samplerate,DirectElPath)
 
+SongCut = Audiowrite(NewXl,NewXr,Samplerate,MusicPath)

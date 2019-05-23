@@ -12,16 +12,13 @@ import soundfile as sf
 import numpy as np
 from Functions import readwav
 
-#path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\SCUT_KEMAR_radius_1.sofa'
-#path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\subject_003.sofa'
-#path = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR_CIRC360_NF100.sofa'
+#HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\HRIR_CIRC360_NF025.sofa'
+#HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\HRIR_CIRC360_NF150.sofa'
 HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\RIEC_hrir_subject_063.sofa'
-#HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\SCUT_KEMAR_radius_0.2.sofa'
-#HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\subject_012.sofa'
 
-AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience - Dreams.wav'
-MusicPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Fleetwood Mac - Dreams.wav'
-ConvPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Convolution\\RealHead\\4Sources\\4-Dreams-binaural.wav'
+AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience - Rip&Tear.wav'
+MusicPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Rip&Tear_Cut.wav'
+ConvPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Convolution\\HRIR_CIRC360_NF150\\ER\\4Sources\\4-Rip&Tear.wav'
 
 sofa = SOFAFile(HRIRpath,'r')
 
@@ -131,8 +128,8 @@ plt.grid()
 plt.legend()
 plt.show()
 
-binaural_leftPlus110 = sp.convolve(ambiencexl,HRTFPlus110[0], mode='full', method='auto')[:len(ambiencexl)]
-binaural_rightPlus110 = sp.convolve(ambiencexr,HRTFPlus110[1], mode='full', method='auto')[:len(ambiencexr)]
+binaural_leftPlus110 = sp.convolve(ambiencexl,HRTFPlus110[0], mode='full', method='auto')[:len(dataxl)] #Por alguna razón que ahora desconozco, si utilizamos tan solo un trozo del audio original, en vez del audio entero, los tamaós difieren, así que losa fuerzo al tamaó mas pequeño(el del audio original)
+binaural_rightPlus110 = sp.convolve(ambiencexr,HRTFPlus110[1], mode='full', method='auto')[:len(dataxr)]
 
 binauralPlus110 = np.asarray([binaural_leftPlus110, binaural_rightPlus110]).swapaxes(-1,0)
 
@@ -145,12 +142,13 @@ plt.grid()
 plt.legend()
 plt.show()
 
-binaural_leftMin110 = sp.convolve(ambiencexl,HRTFMin110[0], mode='full', method='auto')[:len(ambiencexl)]
-binaural_rightMin110 = sp.convolve(ambiencexr,HRTFMin110[1], mode='full', method='auto')[:len(ambiencexr)]
+binaural_leftMin110 = sp.convolve(ambiencexl,HRTFMin110[0], mode='full', method='auto')[:len(dataxl)]
+binaural_rightMin110 = sp.convolve(ambiencexr,HRTFMin110[1], mode='full', method='auto')[:len(dataxr)]
 
 binauralMin110 = np.asarray([binaural_leftMin110, binaural_rightMin110]).swapaxes(-1,0)
 
 #sf.write('binauralMin110.wav',binauralMin110, samplerateambience)
 
-binaural = binauralPlus30+binauralMin30+binauralPlus110+binauralMin110 /4
-sf.write(ConvPath,binaural,samplerate)
+binaural = binauralPlus30+binauralMin30+binauralPlus110+binauralMin110 
+binauralNorm = binaural/np.abs(np.max(binaural))
+sf.write(ConvPath,binauralNorm,samplerate)
