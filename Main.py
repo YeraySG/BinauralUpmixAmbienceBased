@@ -75,10 +75,10 @@ AlphaC = AlphaCom (CCCoefficient)
 AmbienceL,DirectL = EqualRatios(AlphaC,STFTXl)
 AmbienceR,DirectR = EqualRatios(AlphaC,STFTXr)
 
-#plt.figure(),plt.pcolormesh(np.power(np.abs(AmbienceL),2)),plt.colorbar(),plt.show()
-#plt.figure(),plt.pcolormesh(np.power(np.abs(AmbienceR),2)),plt.colorbar(),plt.show()
-#plt.figure(),plt.pcolormesh(np.power(np.abs(DirectL),2)),plt.colorbar(),plt.show()
-#plt.figure(),plt.pcolormesh(np.power(np.abs(DirectR),2)),plt.colorbar(),plt.show()
+plt.figure(),plt.pcolormesh(np.power(np.abs(AmbienceL),2)),plt.colorbar(),plt.show()
+plt.figure(),plt.pcolormesh(np.power(np.abs(AmbienceR),2)),plt.colorbar(),plt.show()
+plt.figure(),plt.pcolormesh(np.power(np.abs(DirectL),2)),plt.colorbar(),plt.show()
+plt.figure(),plt.pcolormesh(np.power(np.abs(DirectR),2)),plt.colorbar(),plt.show()
 
 IAmbienceL,IAmbienceR = InverseSTFT(AmbienceL,AmbienceR,Samplerate)
 IDirectL,IDirectR = InverseSTFT(DirectL,DirectR,Samplerate)
@@ -86,8 +86,6 @@ IDirectL,IDirectR = InverseSTFT(DirectL,DirectR,Samplerate)
 Ambience = Audiowrite(IAmbienceL[1],IAmbienceR[1],Samplerate,AmbiencePath)
 Direct = Audiowrite(IDirectL[1],IDirectR[1],Samplerate,DirectPath)
 
-#DirectL = (1-AlphaC)*np.abs(STFTXl)
-#DirectR = (1-AlphaC)*np.abs(STFTXr)
 
 plt.figure(),plt.pcolormesh(np.power(np.abs(AmbienceL),2)),plt.colorbar(),plt.show()
 

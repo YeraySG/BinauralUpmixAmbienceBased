@@ -16,9 +16,9 @@ from Functions import readwav
 #HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\HRIR_CIRC360_NF150.sofa'
 HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\RIEC_hrir_subject_063.sofa'
 
-AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience - Rip&Tear.wav'
+AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Ambience\\AmbienceEL - Rip&Tear.wav'
 MusicPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Rip&Tear_Cut.wav'
-ConvPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Convolution\\HRIR_CIRC360_NF150\\ER\\4Sources\\4-Rip&Tear.wav'
+ConvPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Convolution\\RealHead\\EL\\4Sources\\4-Rip&Tear.wav'
 
 sofa = SOFAFile(HRIRpath,'r')
 
@@ -95,6 +95,8 @@ plt.plot(HRTFPlus30[0], label="left", linewidth=0.5,  marker='o', markersize=1)
 plt.plot(HRTFPlus30[1], label="right", linewidth=0.5,  marker='o', markersize=1)
 plt.grid()
 plt.legend()
+plt.xlabel('Time [ms]')
+plt.ylabel('Impulse Response Pressure')
 plt.show()
 
 binaural_leftPlus30 = sp.convolve(dataxl,HRTFPlus30[0], mode='full', method='auto')[:len(dataxl)]

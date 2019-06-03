@@ -16,10 +16,10 @@ from Functions import readwav
 #HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\HRIR_CIRC360_NF025.sofa'
 HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\RIEC_hrir_subject_063.sofa'
 
-DirectPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Direct\\DirectEL - SeenRain.wav'
-AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Ambience\\AmbienceEL - SeenRain.wav'
-MusicPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\SeenRain_Cut.wav'
-ConvPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Convolution\\HRIR_CIRC360_NF150\\EL\\5Sources\\5-SeenRain-binaural.wav'
+DirectPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Direct\\Direct - Jambú.wav'
+AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience - Jambú.wav'
+MusicPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Jambú_Cut.wav'
+ConvPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Convolution\\RealHead\\ER\\5Sources\\5-Jambú-binaural.wav'
 
 sofa = SOFAFile(HRIRpath,'r')
 
