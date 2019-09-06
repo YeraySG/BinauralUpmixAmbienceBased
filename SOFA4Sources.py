@@ -12,13 +12,11 @@ import soundfile as sf
 import numpy as np
 from Functions import readwav
 
-#HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\HRIR_CIRC360_NF025.sofa'
-#HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\HRIR_CIRC360_NF150.sofa'
-HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\RIEC_hrir_subject_063.sofa'
+HRIRpath =  'Path to the sofa file containing the HRIR from the dummy or human head'#'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\HRIR_CIRC360_NF150.sofa'
 
-AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualLevels\\Ambience\\AmbienceEL - Rip&Tear.wav'
-MusicPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Rip&Tear_Cut.wav'
-ConvPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Convolution\\RealHead\\EL\\4Sources\\4-Rip&Tear.wav'
+AmbiencePath = 'Path to the Ambience sound that the method returned' #'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\AmbienceFull - SeenRain.wav'
+MusicPath = 'Path to the original sound that the method returned' #'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Boney M. - Have You Ever Seen The Rain.wav'
+ConvPath = 'Path to where the final audio will be stored' #'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Convolution\\HRIR_CIRC360_NF150\\ER\\4Sources\\4TFG-SeenRain.wav'
 
 sofa = SOFAFile(HRIRpath,'r')
 
@@ -79,7 +77,7 @@ print (hrtf.shape)
 #
 #HRTFPlus110 = data[250,:,:]
 
-'RealHead'
+'RealHead' #Values we use to determine the position of the Virtual Sources
 HRTFMin30 = data[282,:,:]
 
 HRTFMin110 = data[270,:,:]
@@ -105,7 +103,7 @@ binaural_rightPlus30 = sp.convolve(dataxr,HRTFPlus30[1], mode='full', method='au
 binauralPlus30 = np.asarray([binaural_leftPlus30, binaural_rightPlus30]).swapaxes(-1,0)
 # Write to a file, and enjoy!
 
-#sf.write('binauralPlus30.wav',binauralPlus30, samplerate)
+sf.write('binauralPlus30.wav',binauralPlus30, samplerate)
 
 '-30'
 plt.plot(HRTFMin30[0], label="left", linewidth=0.5,  marker='o', markersize=1)
@@ -119,7 +117,7 @@ binaural_rightMin30 = sp.convolve(dataxr,HRTFMin30[1], mode='full', method='auto
 
 binauralMin30 = np.asarray([binaural_leftMin30, binaural_rightMin30]).swapaxes(-1,0)
 
-#sf.write('binauralMin30.wav',binauralMin30, samplerate)
+sf.write('binauralMin30.wav',binauralMin30, samplerate)
 
 ambiencexl,ambiencexr,samplerateambience = readwav(AmbiencePath)
 
@@ -130,12 +128,12 @@ plt.grid()
 plt.legend()
 plt.show()
 
-binaural_leftPlus110 = sp.convolve(ambiencexl,HRTFPlus110[0], mode='full', method='auto')[:len(dataxl)] #Por alguna razón que ahora desconozco, si utilizamos tan solo un trozo del audio original, en vez del audio entero, los tamaós difieren, así que losa fuerzo al tamaó mas pequeño(el del audio original)
-binaural_rightPlus110 = sp.convolve(ambiencexr,HRTFPlus110[1], mode='full', method='auto')[:len(dataxr)]
+binaural_leftPlus110 = sp.convolve(ambiencexl,HRTFPlus110[0], mode='full', method='auto')[:len(ambiencexl)] #Por alguna razón que ahora desconozco, si utilizamos tan solo un trozo del audio original, en vez del audio entero, los tamaós difieren, así que losa fuerzo al tamaó mas pequeño(el del audio original)
+binaural_rightPlus110 = sp.convolve(ambiencexr,HRTFPlus110[1], mode='full', method='auto')[:len(ambiencexr)]
 
 binauralPlus110 = np.asarray([binaural_leftPlus110, binaural_rightPlus110]).swapaxes(-1,0)
 
-#sf.write('binauralPlus110.wav',binauralPlus110, samplerateambience)
+sf.write('binauralPlus110.wav',binauralPlus110, samplerateambience)
 
 '-110'
 plt.plot(HRTFMin110[0], label="left", linewidth=0.5,  marker='o', markersize=1)
@@ -144,13 +142,13 @@ plt.grid()
 plt.legend()
 plt.show()
 
-binaural_leftMin110 = sp.convolve(ambiencexl,HRTFMin110[0], mode='full', method='auto')[:len(dataxl)]
-binaural_rightMin110 = sp.convolve(ambiencexr,HRTFMin110[1], mode='full', method='auto')[:len(dataxr)]
+binaural_leftMin110 = sp.convolve(ambiencexl,HRTFMin110[0], mode='full', method='auto')[:len(ambiencexl)]
+binaural_rightMin110 = sp.convolve(ambiencexr,HRTFMin110[1], mode='full', method='auto')[:len(ambiencexr)]
 
 binauralMin110 = np.asarray([binaural_leftMin110, binaural_rightMin110]).swapaxes(-1,0)
 
-#sf.write('binauralMin110.wav',binauralMin110, samplerateambience)
+sf.write('binauralMin110.wav',binauralMin110, samplerateambience)
 
-binaural = binauralPlus30+binauralMin30+binauralPlus110+binauralMin110 
+binaural = binauralPlus30+binauralMin30+binauralPlus110+binauralMin110 #The final stereo is the sum of all the signals normalized
 binauralNorm = binaural/np.abs(np.max(binaural))
 sf.write(ConvPath,binauralNorm,samplerate)

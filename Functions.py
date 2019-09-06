@@ -37,33 +37,6 @@ def InverseSTFT (Xl,Xr,Fs):
     
     return IXl, IXr
 
-def CnstPwrPanning (signal,angle): #Pan a stereo signal to a given angle using the Constant Power Panning formula
-    """
-    The angle value should be between -pi/2 and pi/2
-    """
-#    if (angle > 45) or (angle < -45):
-#        print ('Insert a value between +- 45º')
-    if angle ==-45:
-        PXl = signal*1.0
-        PXr = signal*6.123233995736766e-17
-        
-        PAudio = np.zeros((np.size(signal),2))
-        PAudio [:,0] = PXl
-        PAudio [:,1] = PXr
-    
-        return PAudio,PXl,PXr
-    else:
-        rad = ((45+angle)*np.pi)/180
-        
-        PXl = signal*np.cos(rad)
-        PXr = signal*np.sin(rad)
-        
-        PAudio = np.zeros((np.size(signal),2))
-        PAudio [:,0] = PXl
-        PAudio [:,1] = PXr
-    
-        return PAudio,PXl,PXr
-
 def Audiowrite(Xl,Xr,Fs,name):
     
     C=2

@@ -12,14 +12,12 @@ import soundfile as sf
 import numpy as np
 from Functions import readwav
 
-#HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\HRIR_CIRC360_NF150.sofa'
-#HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\HRIR_CIRC360_NF025.sofa'
-HRIRpath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\RIEC_hrir_subject_063.sofa'
+HRIRpath = 'Path to the sofa file containing the HRIR from the dummy or human head' #'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\HRIR\\RIEC_hrir_subject_063.sofa'
 
-DirectPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Direct\\Direct - Jambú.wav'
-AmbiencePath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience - Jambú.wav'
-MusicPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Jambú_Cut.wav'
-ConvPath = 'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Convolution\\RealHead\\ER\\5Sources\\5-Jambú-binaural.wav'
+DirectPath = 'Path to the Direct sound that the method returned' #'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Direct\\Direct - Jambú.wav'
+AmbiencePath = 'Path to the Ambience sound that the method returned' #'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\AudioResults\\EqualRatios\\Ambience\\Ambience - Jambú.wav'
+MusicPath = 'Path to the original sound that the method returned' #'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Music\\Jambú_Cut.wav'
+ConvPath = 'Path to where the final audio will be stored' #'C:\\Users\\Yeray\\Documents\\GitHub\\TFG\\Convolution\\RealHead\\ER\\5Sources\\5-Jambú-binaural.wav'
 
 sofa = SOFAFile(HRIRpath,'r')
 
@@ -83,7 +81,7 @@ print (hrtf.shape)
 #
 #HRTFPlus110 = data[250,:,:]
 
-'Real Head'
+'Real Head' #Values we use to determine the position of the Virtual Sources
 HRTF0 = data[216,:,:]
 
 HRTFMin30 = data[282,:,:]
@@ -123,7 +121,8 @@ binaural_rightPlus30 = sp.convolve(dataxr,HRTFPlus30[1], mode='full', method='au
 binauralPlus30 = np.asarray([binaural_leftPlus30, binaural_rightPlus30]).swapaxes(-1,0)
 # Write to a file, and enjoy!
 
-#sf.write('binauralPlus30.wav',binauralPlus30, samplerate)
+#In case you want one of the files alone as a stereo
+#sf.write('binauralPlus30.wav',binauralPlus30, samplerate)  
 
 '-30'
 plt.plot(HRTFMin30[0], label="left", linewidth=0.5,  marker='o', markersize=1)
@@ -169,6 +168,6 @@ binauralMin110 = np.asarray([binaural_leftMin110, binaural_rightMin110]).swapaxe
 
 #sf.write('binauralMin110.wav',binauralMin110, samplerateambience)
 
-binaural = binaural0+binauralPlus30+binauralMin30+binauralPlus110+binauralMin110
+binaural = binaural0+binauralPlus30+binauralMin30+binauralPlus110+binauralMin110 #The final stereo is the sum of all the signals normalized
 binauralNorm = binaural/np.abs(np.max(binaural))
 sf.write(ConvPath,binauralNorm,samplerate)
